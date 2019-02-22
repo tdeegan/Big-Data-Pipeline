@@ -1,0 +1,8 @@
+SELECT pSum.*, gSum.h_points, gSum.a_points
+FROM `bigquery-public-data.ncaa_basketball.mbb_players_games_sr` pSum
+JOIN
+(
+  SELECT game_id, h_points, a_points
+  FROM `bigquery-public-data.ncaa_basketball.mbb_games_sr`
+) AS gSum
+ON pSum.game_id = gSum.game_id;

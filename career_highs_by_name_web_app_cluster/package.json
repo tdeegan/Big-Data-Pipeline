@@ -1,0 +1,17 @@
+{
+  "requires": true,
+  "lockfileVersion": 1,
+  "dependencies": {
+    "filereader": {
+      "integrity": "sha1-x0fUos2PYeVBinwH/hJXpD8KzbE=",
+      "resolved": "https://registry.npmjs.org/filereader/-/filereader-0.10.3.tgz",
+      "version": "0.10.3"
+    },
+    "hbase-rpc-client": "^0.1.15",
+    "jquery": {
+      "integrity": "sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==",
+      "resolved": "https://registry.npmjs.org/jquery/-/jquery-3.3.1.tgz",
+      "version": "3.3.1"
+    }
+  }
+}

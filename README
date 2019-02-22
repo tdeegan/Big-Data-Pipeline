@@ -1,0 +1,33 @@
+For my final project, I ingested roughly 1M individual game logs for NCAA Men’s Basketball players dating back several years.  The end product is a web application that solicits the first name and the last name of a player and displays their career high totals for various statistics.
+
+A few sample names that will work are listed below:
+Jayson Tatum
+Joel Embiid
+Andrew Wiggins
+
+I was able to access the data by making use of a Google BigQuery public dataset.  The query I performed is located in BigQuery.txt.  The resulting file is too large to download directly as a .csv to my local machine and I did not have access to write to a bucket on our project, so I signed up for a free trial under my own account and created a Google Cloud Storage bucket to write to.  This enabled me to download the .csv to my local machine.
+
+I then added a response variable for each row to indicate whether or not that player’s statistics for that game resulted in a win with an eye toward building a machine learning classification model (EDA.ipynb).  I then wrote the file to HDFS on our class cluster (/tmp/tdeegan/Final/NCAA_mbb_wins.csv).  
+
+Next, I executed a number of Hive scripts with an eye toward writing to an HBase table where the key value store would be (FirstNameLastName, CareerHighStats).  The Hive scripts were executed in the order listed below and are currently stored on the class cluster (not in HDFS) at ~/tdeegan/Final/HiveScripts:
+
+mbb_csv.hql
+mbb.hql
+copyOver.hql
+mbb_summary.hql
+write_to_hbase.hql
+
+The HBase table is also on the class cluster and is named ‘career_highs_by_name’.
+
+Finally, I built a front-end web application.  The files pertaining to the version that runs locally is in the folder named ’career_highs_by_name_web_app’ in this gitlab branch.  
+
+The version that runs on the class cluster is in the folder named ‘career_highs_by_name_web_app_cluster’ in this gitlab branch and is also on the app server under ‘mpcs53013@appserver:~/tdeegan/career_highs_by_name_web_app_cluster’.  I executed the nohup command and the app is running currently at:
+
+http://35.225.120.103:3089/career-highs.html
+
+In lieu of a speed layer, I’ve built a machine learning classification model.  In the past, I’ve used Databricks (which looks like it was founded by the creators of Apache Spark) to build machine learning models with Spark.  Their community edition grants you access to 6 GB clusters for two hours at a time.  You can save the file in .html format which is what I’ve done here (NCAA_mbb.html).
+
+I uploaded the file to DBFS (Databricks File System), did some EDA, train-test split and then built a Random Forest classifier.  
+
+The model itself achieves ~ 58% accuracy on the test set in predicting victory for a player based upon their game log, which certainly has room for improvement, but does clear the threshold for a random guess (50%). 
+
